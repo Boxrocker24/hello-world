@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section-space pt-24 md:pt-32">
+    <div class="container-max">
+        <div class="accent-grid rounded-2xl border border-[var(--border)] bg-[var(--card)]/80 p-8 shadow-card md:p-10">
+            <p class="text-xs uppercase tracking-[0.2em] text-[var(--accent)]">Selected Work</p>
+            <h1 class="mt-4 text-3xl font-semibold text-[var(--text-primary)] md:text-5xl">Case Studies</h1>
+            <p class="mt-5 max-w-3xl text-base leading-relaxed text-[var(--text-muted)] md:text-lg">
+                A focused set of engagement snapshots showing how data systems, diagnostics, and operational strategy were translated into action.
+            </p>
+        </div>
+    </div>
+</section>
+
+<section class="section-space">
+    <div class="container-max">
+        <div class="grid gap-4 md:grid-cols-2">
+            {% for study in case_studies %}
+            <a href="#{{ study.id }}" class="panel block p-6">
+                <h2 class="text-lg font-semibold text-[var(--text-primary)]">{{ study.title }}</h2>
+                <p class="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">{{ study.summary }}</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    {% for tag in study.tags %}
+                    <span class="badge">{{ tag }}</span>
+                    {% endfor %}
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section id="teleradiology" class="section-space pb-16">
+    <div class="container-max">
+        <article class="panel p-8 md:p-10">
+            <h2 class="text-2xl font-semibold leading-tight text-[var(--text-primary)] md:text-3xl">
+                From a Weekend SLA Breakdown to a Repeatable Queue-Diagnostics System
+            </h2>
+            <p class="mt-4 text-sm leading-relaxed text-[var(--text-muted)]">
+                Specific metrics, hours, and financial figures have been generalized or obfuscated. Detailed KPI outcomes are available for private discussion.
+            </p>
+
+            <div class="mt-8 space-y-8">
+                <section class="section-divider">
+                    <h3 class="section-title">Overview</h3>
+                    <p class="section-copy">
+                        A national teleradiology provider experienced repeated Turnaround Time (TAT) SLA breaches concentrated on evenings and weekends. Operations attributed the failures to unpredictable emergency department demand. I validated the assumption, identified the true failure mode, and delivered an intervention strategy grounded in measurable queue dynamics.
+                    </p>
+                </section>
+
+                <section class="section-divider">
+                    <h3 class="section-title">What I Built (Deliverables)</h3>
+                    <ul class="list-space">
+                        <li><span class="font-semibold text-[var(--text-primary)]">Data foundation:</span> Automated ingestion and modeling of HL7 arrivals and operational timestamps in Google BigQuery</li>
+                        <li><span class="font-semibold text-[var(--text-primary)]">Scheduling integration:</span> Normalized shift blocks and staffing coverage in Supabase for alignment with production outcomes</li>
+                        <li><span class="font-semibold text-[var(--text-primary)]">Queue health KPIs:</span> Purpose-built metrics to distinguish "busy but controlled" from "actively failing"</li>
+                        <li><span class="font-semibold text-[var(--text-primary)]">Diagnostic matrix:</span> Python-based classifier segmenting SLA failures into actionable root-cause categories</li>
+                        <li><span class="font-semibold text-[var(--text-primary)]">Leadership output:</span> Hour-by-hour operational playbook for targeted staffing and incentives</li>
+                    </ul>
+                </section>
+
+                <section class="section-divider">
+                    <h3 class="section-title">The Problem</h3>
+                    <p class="section-copy">
+                        Chronic SLA breaches were treated as operational noise due to limited explicit penalties, but they materially affected renewal leverage and client retention over time.
+                    </p>
+                </section>
+
+                <section class="section-divider">
+                    <h3 class="section-title">The Approach</h3>
+                    <ol class="list-space list-decimal pl-5 marker:text-[var(--accent)]">
+                        <li>
+                            <span class="font-semibold text-[var(--text-primary)]">Incident analysis:</span> A weekend breach was initially blamed on a volume spike. Data showed arrivals were normal; capacity dropped.
+                        </li>
+                        <li>
+                            <span class="font-semibold text-[var(--text-primary)]">Expand scope:</span> Months of history showed predictable coverage decay in specific transition windows, amplified by dependence on variable per-case labor.
+                        </li>
+                        <li>
+                            <span class="font-semibold text-[var(--text-primary)]">Remove volume bias:</span> Standard metrics were misleading. I built normalized KPIs:
+                            <ul class="mt-3 space-y-2 pl-4">
+                                <li>- <span class="font-semibold text-[var(--text-primary)]">Garbage Collection Ratio (GCR):</span> measures backlog-recovery mode by tracking the age profile of work being completed</li>
+                                <li>- <span class="font-semibold text-[var(--text-primary)]">Volatility Score (Coefficient of Variation):</span> measures whether arrivals are truly chaotic or stable</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <span class="font-semibold text-[var(--text-primary)]">Diagnostic matrix:</span> Combined GCR + volatility + net velocity (clears - arrivals) to classify hours into demand-driven volatility vs inherited backlog.
+                        </li>
+                        <li>
+                            <span class="font-semibold text-[var(--text-primary)]">Make it actionable:</span> Reconstructed hourly roster coverage and paired it with net velocity to show the causal chain (coverage drops -> net velocity negative -> backlog accumulates -> SLA breaches later).
+                        </li>
+                    </ol>
+                </section>
+
+                <section class="section-divider">
+                    <h3 class="section-title">Impact</h3>
+                    <p class="section-copy">
+                        Prevented misallocation (staffing downstream breach hours) by showing upstream cause. Enabled upstream stabilization via retention/coverage focus and targeted variable incentives ("surge pay") only where volatility justified it.
+                    </p>
+                    <p class="mt-3 text-sm text-[var(--text-muted)]">
+                        Detailed KPI outcomes are available privately but redacted online.
+                    </p>
+                </section>
+
+                <section class="section-divider">
+                    <h3 class="section-title">Tools and Technologies</h3>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <span class="badge">BigQuery</span>
+                        <span class="badge">Supabase</span>
+                        <span class="badge">Python</span>
+                        <span class="badge">HL7/event logs</span>
+                    </div>
+                </section>
+            </div>
+        </article>
+    </div>
+</section>
+{% endblock %}

@@ -1,59 +1,114 @@
-Here is a revised version of the case study. It is stripped of all exact internal numbers, explicitly mentions data obfuscation for confidentiality, and is completely reframed to speak the language of a CEO or Business Owner.
+# AI + Data Consultancy Marketing Site
 
-It focuses heavily on the *journey*—how a simple weekend investigation evolved into a company-wide operational overhaul.
+A minimal Flask + Jinja + Tailwind (CDN) marketing website focused on inbound client conversion.
 
----
+## Stack
 
-# Case Study: Turning a Weekend Crisis into a Systemic Operational Strategy
+- Python (Flask)
+- Jinja templates
+- Tailwind CSS via CDN (no build step)
+- Minimal vanilla JavaScript
+- No database
 
-*(Note: Specific company metrics, hours, and financial figures have been generalized or obfuscated to comply with confidentiality requirements.)*
+## Project Structure
 
-## The Catalyst: A Single Bad Weekend
+```text
+.
+|- app.py
+|- requirements.txt
+|- Dockerfile
+|- templates/
+|  |- base.html
+|  |- index.html
+|  |- case_studies.html
+|- static/
+|  |- site.css
+|  |- site.js
+```
 
-It started with a standard operational headache: our teleradiology practice experienced severe Turnaround Time (TAT) Service Level Agreement (SLA) breaches over a single weekend. The prevailing assumption from the operations team was that the hospital Emergency Rooms had simply dropped an unpredictable "bomb" of volume on our doctors.
+## Local Run
 
-I was tasked with diagnosing what went wrong. To do this, I engineered a data pipeline linking our raw HL7 hospital arrival data (in Google BigQuery) with our complex physician scheduling platform (in Supabase).
+1. Create a virtual environment:
 
-When I analyzed that single weekend, I found a discrepancy: the hospital volume didn't actually spike. The volume was normal, but our processing capacity had silently evaporated.
+```bash
+python -m venv .venv
+```
 
-## Scaling the Scope: The CEO Pitch
+2. Activate it:
 
-I realized this wasn't an anomaly. I expanded the data pipeline to pull months of historical shift data. The pattern was undeniable: we weren't experiencing unpredictable volume spikes; we were experiencing a highly predictable, systemic capacity drop-off during specific evening and weekend hours. The core scheduled team was too small, leaving the company entirely dependent on a variable, unscheduled "per-case" workforce that predictably logged off at the exact same times every week.
+```bash
+# Windows (PowerShell)
+.\.venv\Scripts\Activate.ps1
 
-I took these initial findings to the CEO. I reframed the problem from a "customer service complaint" to a massive financial threat: **Invisible Client Churn**. By routinely breaching SLAs, we were eroding our pricing power for future contract renewals. Recognizing the financial risk, the CEO gave me the green light to dive deeper and find the exact root cause of the bleeding.
+# macOS/Linux
+source .venv/bin/activate
+```
 
-## The Gold Mine: Engineering the Diagnostic Matrix
+3. Install dependencies:
 
-With executive buy-in, I moved beyond standard operational reporting and built a custom algorithmic model to find exactly *where* the queue was breaking. Standard metrics like "total cases read" were dangerously misleading—they made busy shifts look highly productive, even if the queue was collapsing.
+```bash
+pip install -r requirements.txt
+```
 
-To cut through the noise, I engineered two proprietary business metrics:
+4. Start the app:
 
-1. **The Garbage Collection Ratio (GCR):** Instead of looking at raw volume, I tracked the "age" of the cases being read. If a high percentage of a shift’s work consisted of cases that were already hours old, that shift wasn't productive—they were just doing "garbage collection."
-2. **The Volatility Score (CV):** I measured the week-over-week predictability of the incoming hospital volume to determine if the environment was chaotic or stable.
+```bash
+python app.py
+```
 
-When I intersected these metrics, it created an absolute gold mine of operational truth.
+5. Open:
 
-## Revealing the Exact Bleed
+```text
+http://127.0.0.1:5000
+```
 
-The Diagnostic Matrix completely upended the company’s assumptions. We assumed our late-night teams were failing because they were too slow. The matrix proved they were actually innocent.
+## Routes
 
-Over **80% of our SLA queue collapses were caused by "Inherited Backlog."** The late-night volume was perfectly predictable, but when those doctors logged on, they spent the majority of their shift shoveling out rotting backlog left behind by the early-evening shift.
+- `/` -> Landing page
+- `/case-studies` -> Case studies page
 
-To make this actionable, I added a **Net Velocity** metric (tracking real-time queue expansion) and mapped the physical roster of doctors logged in hour-by-hour. I was able to show the executive team the exact minute the bleeding started:
+## Docker
 
-* We could watch the roster naturally shrink as doctors logged off for dinner.
-* We could watch the Net Velocity instantly turn negative (meaning the backlog was actively growing).
-* We could watch the subsequent shift log on hours later and get completely buried by the rotting queue, causing the SLAs to formally breach.
+Build image:
 
-## The Business Impact & Actionable Strategy
+```bash
+docker build -t ai-data-site .
+```
 
-By tracking the exact life cycle of an SLA breach, I prevented the company from making a massive resource allocation mistake.
+Run container:
 
-If we had just looked at the surface-level SLA breaches, the company would have spent significant capital hiring full-time doctors for the late-night shifts. My analysis proved that adding doctors to the late-night shift would be treating the symptom, not the disease.
+```bash
+docker run -p 5000:5000 ai-data-site
+```
 
-Instead, I delivered a surgical, cost-efficient strategy:
+Open:
 
-* **Targeted Shift Retention:** We adjusted the scheduling focus to the hours *preceding* the collapses, preventing the fire from ever starting.
-* **Automated Surge Pricing:** For the minority of hours where hospital volume was genuinely volatile and unpredictable, I recommended a dynamic "Surge Pricing" model. This shifted our labor strategy to a variable cost that only triggered when revenue (volume) actively supported it.
+```text
+http://127.0.0.1:5000
+```
 
-**The Result:** What began as a request to review a single weekend of bad metrics evolved into a complete overhaul of the company’s capacity strategy—aligning data engineering, operational reality, and executive financial goals to protect millions in recurring revenue.
+## Deployment Notes
+
+This app is designed for single-container deployment on platforms like:
+
+- Google Cloud Run
+- Render
+- Fly.io
+- Railway
+- Any Docker-compatible host
+
+Use the included `Dockerfile` as-is for a straightforward deployment path.
+
+## Content Editing Guide
+
+- Main data blocks (services/process/proof/tools/case cards): `app.py`
+- Shared layout (nav/footer/meta): `templates/base.html`
+- Landing page sections: `templates/index.html`
+- Case study content: `templates/case_studies.html`
+- Theme and component styles: `static/site.css`
+- Mobile nav + contact form behavior: `static/site.js`
+
+## Placeholders to Replace
+
+- Brand label in nav/footer: `&lt;YOUR COMPANY NAME&gt;`
+- Contact email: `hello@yourcompany.com`
